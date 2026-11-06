@@ -1,0 +1,105 @@
+name: Build & Release Chrome Extension
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - '[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Validate, Package & Publish Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Validate manifest, icons, locales & JS syntax
+        id: validate
+        run: |
+          node -e '
+            const fs = require("fs");
+            const manifest = JSON.parse(fs.readFileSync("manifest.json", "utf8"));
+            if (!manifest.version || manifest.manifest_version !== 3) {
+              throw new Error("Invalid manifest.json");
+            }
+            console.log("Manifest version:", manifest.version);
+
+            const refName = process.env.GITHUB_REF_NAME || "";
+            if (process.env.GITHUB_REF_TYPE === "tag") {
+              const tagVersion = refName.replace(/^v/, "");
+              if (tagVersion !== manifest.version) {
+                throw new Error(`Tag version (${tagVersion}) does not match manifest.json version (${manifest.version})`);
+              }
+            }
+
+            for (const [size, file] of Object.entries(manifest.icons || {})) {
+              const buf = fs.readFileSync(file);
+              const w = buf.readUInt32BE(16);
+              const h = buf.readUInt32BE(20);
+              if (w !== Number(size) || h !== Number(size)) {
+                throw new Error(`Icon ${file} declared as ${size}x${size} but actual PNG dimensions are ${w}x${h}`);
+              }
+            }
+            console.log("All icon dimensions match manifest declarations.");
+
+            for (const loc of ["fr", "en", "es", "de", "it"]) {
+              const data = JSON.parse(fs.readFileSync(`_locales/${loc}/messages.json`, "utf8"));
+              for (const [key, entry] of Object.entries(data)) {
+                if (entry.placeholders) {
+                  for (const [phName, phVal] of Object.entries(entry.placeholders)) {
+                    if (!phVal || !phVal.content || !phVal.content.trim()) {
+                      throw new Error(`_locales/${loc}/messages.json: empty placeholder "${phName}" in "${key}"`);
+                    }
+                  }
+                }
+              }
+            }
+            console.log("All _locales JSON files and placeholders are valid.");
+          '
+          while IFS= read -r -d '' f; do
+            node --input-type=module --check < "$f"
+          done < <(find src ui -name "*.js" -print0)
+          VERSION=$(node -p "require('./manifest.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build clean Chrome Extension ZIP
+        run: |
+          VERSION="${{ steps.validate.outputs.version }}"
+          ZIP_NAME="digirisk-chrome-v${VERSION}.zip"
+          mkdir -p dist/package
+          cp manifest.json LICENSE icon32.png icon128.png icon192.png dist/package/
+          cp -r _locales src ui dist/package/
+          cd dist/package
+          zip -r "../${ZIP_NAME}" . -x "*.DS_Store" "*Thumbs.db" "*.swp"
+          cd ../..
+          echo "Created dist/${ZIP_NAME} ($(du -h "dist/${ZIP_NAME}" | cut -f1))"
+          echo "zip_path=dist/${ZIP_NAME}" >> $GITHUB_OUTPUT
+          echo "zip_name=${ZIP_NAME}" >> $GITHUB_OUTPUT
+        id: package
+
+      - name: Upload ZIP Artifact (Action Run)
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ steps.package.outputs.zip_name }}
+          path: ${{ steps.package.outputs.zip_path }}
+
+      - name: Create GitHub Release & Attach ZIP
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "DigiRisk v${{ steps.validate.outputs.version }}"
+          files: ${{ steps.package.outputs.zip_path }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false

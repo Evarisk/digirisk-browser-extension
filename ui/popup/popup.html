@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title><span data-i18n="popup_1"></span></title>
+    <link rel="stylesheet" href="popup.css?v=2">
+</head>
+<body>
+    <div class="container">
+        <div class="top-nav">
+            <div class="nav-logo" style="display: flex; align-items: center; gap: 8px;">
+                <img src="../../icon32.png" alt="DigiRisk" style="width: 20px; height: 20px; border-radius: 4px;">
+                <span style="font-weight: 700; font-size: 14px; color: #1e293b;">DigiRisk</span>
+                <div class="profile-switcher-wrapper" style="position: relative; display: flex; align-items: center;">
+                    <img id="nav-favicon" src="" style="position: absolute; left: 8px; width: 14px; height: 14px; pointer-events: none; display: none;">
+                    <select id="doli-active-profile" class="profile-switcher hidden">
+                        <!-- Rempli dynamiquement en JS -->
+                    </select>
+                </div>
+            </div>
+            <div class="nav-tabs">
+                <div class="nav-tab-group">
+                    <button class="nav-tab active" id="tab-ticket" data-i18n-title="popup_title_39">
+                        <div class="icon-wrapper" style="position: relative; display: inline-flex;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(-45deg)"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 11v2"></path><path d="M13 17v2"></path></svg>
+                            <span class="nav-badge-plus">+</span>
+                        </div>
+                    </button>
+                    <button class="nav-tab" id="tab-ticket-list" data-i18n-title="popup_title_ticket_list">
+                        <div class="icon-wrapper" style="position: relative; display: inline-flex;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(-45deg)"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 11v2"></path><path d="M13 17v2"></path></svg>
+                        </div>
+                    </button>
+                    <button class="nav-tab" id="btn-nav-options" title="Options DigiRisk">
+                        <div class="icon-wrapper" style="position: relative; display: inline-flex;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="performance-warning" class="warning hidden" style="background-color: #fff3cd; color: #856404; border-color: #ffeeba; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 4px 6px; border-radius: 4px; border: 1px solid #ffeeba;">
+            <span style="margin: 0; font-size: 11px;" id="performance-warning-text"></span>
+            <span style="font-size: 11px;">-</span>
+            <a href="#" target="_blank" id="performance-warning-link" style="color: #856404; font-weight: bold; text-decoration: underline; font-size: 11px;"></a>
+        </div>
+
+        <div class="global-status-container" style="text-align: left; margin: 10px 0;">
+            <div id="status-message"></div>
+        </div>
+
+        <div class="header-container" id="main-header-container" style="flex-direction: column; align-items: stretch; gap: 6px;">
+            <h2 id="view-title" class="hidden">Nouveau Ticket</h2>
+
+            <div id="ticket-top-actions" style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
+                <!-- Ligne 1 : GP / UT DigiRisk + Lieu -->
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                    <div class="searchable-select-container mini-select" id="ticket-digiriskelement-container" style="flex: 3; min-width: 0;">
+                        <select id="ticket-digiriskelement" class="searchable-select hidden">
+                            <option value="">GP / UT (Unité de travail)</option>
+                        </select>
+                    </div>
+                    <div style="flex: 2; min-width: 0;">
+                        <input type="text" id="ticket-location" placeholder="Lieu (ex: Atelier...)" style="width: 100%; height: 28px; padding: 4px 8px; font-size: 12px; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box;">
+                    </div>
+                </div>
+
+                <!-- Ligne 2 : Tiers / Contact / Projet -->
+                <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                    <div class="searchable-select-container mini-select" style="flex: 1; min-width: 0;">
+                        <select id="ticket-tiers" class="searchable-select hidden">
+                            <option value=""><span data-i18n="popup_5"></span></option>
+                        </select>
+                    </div>
+
+                    <div class="searchable-select-container mini-select hidden" id="ticket-contact-container" style="flex: 1; min-width: 0;">
+                        <select id="ticket-contact" class="searchable-select hidden">
+                            <option value=""><span data-i18n="popup_6"></span></option>
+                        </select>
+                    </div>
+
+                    <div class="searchable-select-container mini-select" id="ticket-project-container" style="flex: 1; min-width: 0;">
+                        <select id="ticket-project" class="searchable-select hidden">
+                            <option value=""><span data-i18n="popup_7"></span></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="setup-warning" class="onboarding-container hidden">
+            <div class="onboarding-hero">
+                <div class="onboarding-brand">
+                    <img src="../../icon128.png" alt="DigiRisk" class="onboarding-logo">
+                    <div>
+                        <h2 class="onboarding-title"><span data-i18n="onboarding_title"></span></h2>
+                        <p class="onboarding-desc"><span data-i18n="onboarding_desc"></span></p>
+                    </div>
+                </div>
+                <div class="onboarding-links">
+                    <a href="https://digirisk.com" target="_blank" rel="noopener noreferrer" class="onboarding-link-pill">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <span data-i18n="onboarding_link_site"></span>
+                    </a>
+                    <a href="https://www.dolistore.com/search?orderby=position&orderway=desc&search_query=digirisk" target="_blank" rel="noopener noreferrer" class="onboarding-link-pill store-pill">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                        <span data-i18n="onboarding_link_store"></span>
+                    </a>
+                    <a href="https://github.com/Evarisk/DigiRisk" target="_blank" rel="noopener noreferrer" class="onboarding-link-pill">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        <span data-i18n="onboarding_link_doc"></span>
+                    </a>
+                </div>
+            </div>
+
+            <form id="onboarding-form" class="onboarding-form">
+                <div class="onboarding-form-header">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    <span data-i18n="onboarding_form_title"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="onboarding-label-row">
+                        <label for="onboarding-doli-url"><span data-i18n="onboarding_url_label"></span></label>
+                        <a href="#" id="onboarding-open-doli-link" target="_blank" rel="noopener noreferrer" class="onboarding-doli-shortcut hidden"><span data-i18n="onboarding_open_doli"></span></a>
+                    </div>
+                    <input type="url" id="onboarding-doli-url" data-i18n-placeholder="onboarding_url_ph" required>
+                    <small class="onboarding-hint"><span data-i18n="onboarding_url_hint"></span></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="onboarding-doli-login"><span data-i18n="opt_62"></span></label>
+                    <input type="text" id="onboarding-doli-login" data-i18n-placeholder="opt_ph_102" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="onboarding-doli-password"><span data-i18n="opt_63"></span></label>
+                    <input type="password" id="onboarding-doli-password" data-i18n-placeholder="opt_ph_103" required>
+                </div>
+
+                <div id="onboarding-status" class="onboarding-status hidden"></div>
+
+                <button type="submit" id="btn-onboarding-connect" class="onboarding-btn-primary">
+                    <span class="spinner"></span>
+                    <span data-i18n="onboarding_btn_connect"></span>
+                </button>
+            </form>
+
+            <div class="onboarding-footer">
+                <button type="button" id="btn-open-options" class="onboarding-btn-secondary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span data-i18n="onboarding_btn_advanced"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- VUE TICKET -->
+        <div id="view-ticket" class="tab-content">
+            <form id="ticket-form" class="hidden">
+            <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4px;">
+                    <label for="ticket-subject" style="margin-bottom: 0;"><span data-i18n="popup_10"></span></label>
+                    <button type="button" id="btn-clear-ticket" data-i18n-title="popup_title_40" style="padding: 2px; width: 22px; height: 22px; border-radius: 4px; background: #3498db; color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" class="btn-clear-hover">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                </div>
+                <input type="text" id="ticket-subject" data-i18n-placeholder="popup_ph_44" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ticket-message"><span data-i18n="popup_11"></span></label>
+                <textarea id="ticket-message" rows="4" data-i18n-placeholder="popup_ph_45" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="ticket-assignee"><span data-i18n="popup_12"></span></label>
+                <div class="searchable-select-container">
+                    <select id="ticket-assignee" class="searchable-select hidden">
+                        <option value=""><span data-i18n="popup_13"></span></option>
+                        <option value="loading" disabled><span data-i18n="popup_14"></span></option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="ged-warning" class="hidden" style="color: #e74c3c; font-size: 11px; margin-bottom: 8px; font-weight: 500; text-align: center;"><span data-i18n="popup_19"></span></div>
+            <div class="attachment-section bottom-actions-row new-layout" id="paste-zone">
+                <div class="dashed-upload-zone">
+                    <label class="upload-left" for="ticket-file">
+                        <div class="upload-text">
+                            <span class="blue-link" data-i18n="popup_upload_title"></span>
+                            <span class="upload-hint" data-i18n="popup_upload_hint"></span>
+                        </div>
+                        <svg class="icon-cloud" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1" /><path d="M9 15l3 -3l3 3" /><path d="M12 12l0 9" /></svg>
+                        <input type="file" id="ticket-file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" multiple style="display:none;">
+                    </label>
+                    <div class="upload-separator"></div>
+                    <button type="button" id="btn-capture-screen" class="upload-right capture-btn" title="Capture d'écran">
+                        <span class="blue-link" style="margin-bottom: 2px;">Capture</span>
+                        <svg class="icon-camera" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" /><path d="M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
+                    </button>
+                </div>
+
+                <button type="submit" id="btn-submit" disabled class="btn-submit-rocket">
+                    <span class="spinner"></span>
+                    <span class="btn-text">
+                        <span data-i18n="popup_create_ticket"></span>
+                        <svg class="icon-rocket" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" /><path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" /><path d="M15 9m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+                    </span>
+                </button>
+            </div>
+
+            <div id="preview-container" class="preview-gallery hidden"></div>
+            </form>
+
+            <!-- LISTE DES DERNIERS TICKETS -->
+            <div id="recent-tickets-container-form" class="recent-list hidden" style="margin-top: 15px;">
+                <div class="recent-header"><span data-i18n="popup_36"></span></div>
+                <div id="recent-tickets-list-form">
+                    <div class="loader-container">
+                        <div class="loader-spinner"></div>
+                        <div data-i18n="popup_20"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VUE LISTE TICKETS -->
+        <div id="view-ticket-list" class="tab-content hidden" style="display: flex; flex-direction: column; height: 100%;">
+            <div id="ticket-quick-filters" style="display: flex; background-color: #eef2f5; border-radius: 6px; padding: 2px; align-items: stretch; border: 1px solid #dfe6e9; margin-bottom: 10px; font-size: 11px;">
+                <a href="#" class="ticket-quick-filter" data-filter="month" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; padding: 4px; border-radius: 4px; transition: all 0.2s;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="filter-icon" style="transform: rotate(-45deg)"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 11v2"></path><path d="M13 17v2"></path></svg>
+                    <span data-i18n="popup_quick_month"></span>
+                </a>
+
+                <div class="filter-separator" style="width: 1px; background-color: #cbd5e1; margin: 4px 2px;"></div>
+
+                <a href="#" class="ticket-quick-filter" data-filter="week" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; padding: 4px; border-radius: 4px; transition: all 0.2s;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="filter-icon" style="transform: rotate(-45deg)"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 11v2"></path><path d="M13 17v2"></path></svg>
+                    <span data-i18n="popup_quick_week"></span>
+                </a>
+
+                <div class="filter-separator" style="width: 1px; background-color: #cbd5e1; margin: 4px 2px;"></div>
+
+                <a href="#" class="ticket-quick-filter" data-filter="yesterday" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; padding: 4px; border-radius: 4px; transition: all 0.2s;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="filter-icon" style="transform: rotate(-45deg)"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 11v2"></path><path d="M13 17v2"></path></svg>
+                    <span data-i18n="popup_quick_yesterday"></span>
+                </a>
+
+                <div class="filter-separator" style="width: 1px; background-color: #cbd5e1; margin: 4px 2px;"></div>
+
+                <a href="#" class="ticket-quick-filter" data-filter="all" id="ticket-filter-clear" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; text-decoration: none; padding: 4px 8px; border-radius: 4px; transition: all 0.2s;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="filter-icon" style="transform: rotate(-45deg)"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 11v2"></path><path d="M13 17v2"></path></svg>
+                    <span>Tous</span>
+                </a>
+
+                <div class="filter-separator" style="width: 1px; background-color: #cbd5e1; margin: 4px 2px;"></div>
+
+                <div style="display: flex; align-items: center; justify-content: center; padding: 0 2px;">
+                    <select id="ticket-filter-assignee" class="ticket-assignee-select" title="Filtrer par assignation" style="background-color: #e2e8f0; color: #475569; border-radius: 10px; font-size: 11px; font-weight: bold; border: 1px solid transparent; outline: none; cursor: pointer; padding: 2px 4px; max-width: 130px; transition: all 0.2s;">
+                        <option value="all">Tous</option>
+                        <option value="unassigned">Non assigné</option>
+                    </select>
+                </div>
+
+                <div class="filter-separator" style="width: 1px; background-color: #cbd5e1; margin: 4px 2px;"></div>
+
+                <div style="display: flex; align-items: center; padding: 0 4px;">
+                    <span id="ticket-count-total" style="display: flex; align-items: center; justify-content: center; background-color: #fae4e2; color: #c0392b; font-weight: bold; padding: 0 6px; border-radius: 10px; font-size: 10px; min-width: 20px; height: 16px;">
+                        <div class="loader-spinner small" style="border-top-color: #c0392b; border-color: rgba(192,57,43,0.3); border-top-color: #c0392b; width: 8px; height: 8px; border-width: 2px;"></div>
+                    </span>
+                </div>
+            </div>
+            <div class="search-container" style="padding: 0 0 10px 0; background: #fff; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid #eee; margin-bottom: 10px; flex-shrink: 0;">
+                <div class="input-with-icon" style="position: relative; width: 100%;">
+                    <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#95a5a6" stroke-width="2" style="position: absolute; left: 10px; top: 10px; pointer-events: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="ticket-search-input" placeholder="Rechercher un ticket (sujet, réf, GP/UT, lieu...)" style="width: 100%; padding: 8px 10px 8px 32px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; outline: none; box-sizing: border-box; display: block; background: #f8f9fa;">
+                </div>
+            </div>
+
+            <div id="all-ticket-container" class="recent-list" style="margin-top: 0; border: none; padding: 0; flex: 1; overflow-y: auto;">
+                <div id="recent-tickets-list">
+                    <div class="loader-container">
+                        <div class="loader-spinner"></div>
+                        <div data-i18n="popup_20"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../src/utils/i18n.js"></script>
+    <script src="../../src/utils/errors.js"></script>
+    <script type="module" src="popup.js"></script>
+</body>
+</html>

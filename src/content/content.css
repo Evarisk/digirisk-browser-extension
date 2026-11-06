@@ -1,0 +1,138 @@
+/* Styles appliqués par l'extension sur la page web pour l'éditeur de capture */
+
+#doli-editor-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: transparent;
+    z-index: 2147483647; /* Maximum possible z-index */
+    margin: 0; padding: 0;
+}
+
+#doli-editor-overlay.doli-cropped {
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#doli-editor-toolbar {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    z-index: 2;
+}
+
+.doli-tool-btn {
+    background: #34495e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.doli-tool-btn:hover {
+    background: #415b76;
+}
+
+.doli-tool-btn.active {
+    background: #3498db;
+    font-weight: bold;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.doli-tool-btn.success {
+    background: #27ae60;
+}
+.doli-tool-btn.success:hover {
+    background: #2ecc71;
+}
+
+.doli-tool-btn.danger {
+    background: #c0392b;
+}
+.doli-tool-btn.danger:hover {
+    background: #e74c3c;
+}
+
+#doli-editor-canvas-container {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    margin: 0; padding: 0;
+    overflow: hidden;
+}
+
+#doli-editor-overlay.doli-cropped #doli-editor-canvas-container {
+    position: relative;
+    top: auto; left: auto; width: auto; height: auto;
+    max-width: 95vw;
+    max-height: 85vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#doli-editor-canvas {
+    cursor: crosshair;
+    background-color: transparent;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    object-fit: fill; /* Remplit exactement l'écran original */
+}
+
+#doli-editor-overlay.doli-cropped #doli-editor-canvas {
+    width: auto; height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Text input flottant pour l'outil Texte */
+#doli-floating-text-input {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px dashed #e74c3c;
+    color: #e74c3c;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    padding: 4px;
+    outline: none;
+    min-width: 100px;
+    min-height: 24px;
+    z-index: 3;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Zone de sélection (pour le recadrage visuel) */
+#doli-crop-selection {
+    position: absolute;
+    border: 2px dashed #3498db;
+    background-color: rgba(52, 152, 219, 0.2);
+    pointer-events: none;
+    z-index: 3;
+}
+
+.doli-tool-input-row { display: flex; align-items: center; justify-content: center; gap: 6px; background: #34495e; color: white; padding: 0 10px; border-radius: 4px; height: 35px; }
+.doli-editor-color { -webkit-appearance: none; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; padding: 0; background: transparent; }
+.doli-editor-color::-webkit-color-swatch-wrapper { padding: 0; }
+.doli-editor-color::-webkit-color-swatch { border: 2px solid #ecf0f1; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+.doli-editor-range { -webkit-appearance: none; width: 60px; height: 4px; background: #7f8c8d; border-radius: 2px; outline: none; }
+.doli-editor-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #ecf0f1; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+.doli-editor-separator { width: 1px; height: 25px; background: #7f8c8d; margin: 0 5px; align-self: center; opacity: 0.5; }
